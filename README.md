@@ -11,7 +11,7 @@
 
 **Run server:**
 ```
-uvicorn controller:app
+uvicorn main:app
 ```
 
 **OpenAPI:**

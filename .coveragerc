@@ -1,0 +1,7 @@
+[run]
+include =
+    ./dao/*
+    ./models/*
+    ./controller.py
+omit =
+    */__init__.py

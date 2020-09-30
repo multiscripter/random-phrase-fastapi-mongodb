@@ -20,7 +20,7 @@ class Phrase(BaseModel):
     # Text of phrase.
     text: str = Field(
         description='Text of phrase',
-        max_length=200,
+        max_length=256,
         title='Text'
     )
 

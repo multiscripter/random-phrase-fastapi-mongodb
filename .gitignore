@@ -1,5 +1,5 @@
-# Distribution / packaging
-
-
 __pycache__/
+.coverage
 .idea
+htmlcov/*
+!htmlcov/.htaccess

@@ -10,6 +10,11 @@ from main import app
 
 # https://www.jetbrains.com/help/pycharm/pytest.html#create-pytest-test
 
+# Запуск тестов с покрытием из корня проекта.
+# coverage erase
+# coverage run -m pytest ./tests/*
+# coverage html
+
 
 client = MongoClient()
 db = client[settings['db_name']]
@@ -57,10 +62,8 @@ def test_create_success():
 def test_delete_success():
     """Test: Method DELETE, URI /phrases/"""
 
-    data = {
-        'id': 2
-    }
-    response = req_client.delete('http://127.0.0.1:8000/phrases/', json=data)
+    id = 2
+    response = req_client.delete(f'http://127.0.0.1:8000/phrases/{id}/')
     assert response.status_code == 200
 
     actual = response.json()

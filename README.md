@@ -1,12 +1,12 @@
 # Random phrase
 
-##### architecture: REST
+architecture: **REST**
 
-##### framework: FastAPI
+framework: **FastAPI**
 
-##### data storage: MongoDB
+data storage: **MongoDB**
 
-##### testing: Pytest
+testing: **Pytest**
 
 
 **Run server:**

@@ -31,19 +31,20 @@ class PhraseRepository:
         if params:
             if 'random' in params:
                 val = params['random']
-                val = int(val) if val.isdigit()  else 1
+                val = int(val) if val.isdigit() else 1
                 if val < 1:
                     val = 1
                 cursor = self.collection.aggregate([
                     {'$sample': {'size': val}}
                 ])
-                print(params)
             else:
+                fields = Phrase.__fields__.keys()
                 for key in params:
-                    val = params[key]
-                    if val.isdigit():
-                        val = int(val)
-                    criteria[key] = val
+                    if key in fields:
+                        val = params[key]
+                        if val.isdigit():
+                            val = int(val)
+                        criteria[key] = val
                 cursor = self.collection.find(criteria)
         else:
             cursor = self.collection.find()

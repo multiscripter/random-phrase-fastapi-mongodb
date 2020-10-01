@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Случайная фраза</title>
+    <link rel="shortcut icon" href="/static/favicon.ico">
+    <link href="/static/bootstrap.css" type="text/css" rel="stylesheet">
+    <link href="/static/styles.css" type="text/css" rel="stylesheet">
+    <script src="/static/jquery-3.5.1.min.js"></script>
+    <script>
+        $(function() {
+            var phraseLoader = {
+                authorBox: null,
+                phraseBox: null,
+                btn: false,
+
+                getPhrase: function() {
+                    var self = this;
+                    $.get('/phrases/?random', function(data) {
+                        self.authorBox.text(data[0].author);
+                        self.phraseBox.text(data[0].text);
+                    });
+                },
+
+                init: function() {
+                    this.authorBox = $('#author');
+                    this.phraseBox = $('#phrase')
+                    this.btn = $('#btn');
+                    if (this.btn) {
+                        var self = this;
+                        this.btn.on('click', function(event) {
+                            event.preventDefault();
+                            self.getPhrase.call(self);
+                        });
+                    }
+                }
+            }
+            phraseLoader.init();
+        });
+    </script>
+</head>
+<body>
+    <main class="container">
+        <div class="row">
+            <div class="col">
+                <h1 class="text-center">Случайная фраза</h1>
+                <h4 class="text-center">REST сервис на FastAPI и MongoDB</h4>
+                <blockquote class="blockquote">
+                    <p id="phrase" class="mb-0">Текст этой фраза я так и не придумал.</p>
+                    <footer class="blockquote-footer text-right">
+                        <cite id="author">Неизвестный</cite>
+                    </footer>
+                </blockquote>
+                <div class="text-center">
+                    <a id="btn" class="btn btn-primary btn-lg" href="/phrases/?random">
+                        Ещё фразу!
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

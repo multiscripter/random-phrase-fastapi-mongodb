@@ -1,0 +1,48 @@
+body {
+    cursor: default;
+    font-size: 18px;
+    min-width: 320px;
+}
+
+@media (min-width: 768px) {
+    body {
+        font-size: 16px;
+    }
+}
+
+@media (min-width: 1024px) {
+    body {
+        font-size: 15px;
+    }
+}
+
+@media (min-width: 1280px) {
+    body {
+        font-size: 14px;
+    }
+}
+
+.blockquote {
+    min-height: 11rem;
+}
+
+#phrase {
+    background: #eee;
+    border-radius: 1rem;
+    padding: 0.75rem 1rem;
+}
+
+#btn {
+    border-bottom: 5px solid #0053ad;
+}
+
+#btn:active {
+    border-bottom: none;
+    margin-top: 5px;
+}
+
+#btn:active,
+#btn:focus {
+    box-shadow: none;
+    transition: none;
+}

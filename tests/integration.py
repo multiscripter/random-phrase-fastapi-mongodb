@@ -1,6 +1,7 @@
 from settings import settings
 settings['db_name'] = 'phrase-fastapi-mongodb-test'
 
+import pytest
 from datetime import datetime
 from models.phrase import Phrase
 from pymongo import MongoClient
@@ -12,7 +13,7 @@ from main import app
 
 # Запуск тестов с покрытием из корня проекта.
 # coverage erase
-# coverage run -m pytest ./tests/*
+# coverage run -m pytest -p no:cacheprovider ./tests/*
 # coverage html
 
 
@@ -20,6 +21,25 @@ client = MongoClient()
 db = client[settings['db_name']]
 collection = db[settings['cln_name']]
 req_client = TestClient(app)
+
+
+@pytest.fixture(autouse=True)
+def run_around_tests():
+    # Actions before each test.
+    phrases = []
+    for a in range(1, 3):
+        phrases.append({
+            'id': a,
+            'author': f'test-author-{a}',
+            'text': f'test-text-{a}',
+            'date': datetime.utcnow()
+        })
+    collection.insert_many(phrases)
+
+    yield # run test.
+
+    # Actions after each test.
+    collection.delete_many({})
 
 
 def test_get_list_success():
@@ -56,7 +76,7 @@ def test_create_success():
     assert expected.id == actual['id']
     assert expected.author == actual['author']
     assert expected.text == actual['text']
-    assert re.match('\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}', actual['date'])
+    assert re.match(r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}', actual['date'])
 
 
 def test_delete_success():
@@ -68,13 +88,13 @@ def test_delete_success():
 
     actual = response.json()
     assert 1 == actual
-    assert 2 == collection.count_documents({})
+    assert 1 == collection.count_documents({})
 
 
 def test_update_success():
     """Test: Method PATCH, URI /phrases/{id}/"""
 
-    id = 3
+    id = 2
     data = {
         'author': 'updated author',
         'text': 'updated text'

@@ -1,7 +1,7 @@
 [run]
 include =
-    ./dao/*
     ./models/*
+    ./services/*
     ./controller.py
 omit =
     */__init__.py

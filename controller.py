@@ -1,9 +1,9 @@
-from dao.phrase_repository import PhraseRepository
 from fastapi import APIRouter
 from fastapi import Request
+from typing import List
+from services.phraseService import PhraseService
 from models.phrase import Phrase
 from settings import settings
-from typing import List
 
 router = APIRouter()
 
@@ -16,7 +16,7 @@ router = APIRouter()
     status_code=200
 )
 async def get_list(request: Request) -> List[Phrase]:
-    return get_repository().get(request.query_params)
+    return get_service().get(request.query_params)
 
 
 @router.post(
@@ -27,7 +27,7 @@ async def get_list(request: Request) -> List[Phrase]:
     status_code=201
 )
 async def create(data: dict = None) -> Phrase:
-    return get_repository().create(data)
+    return get_service().create(data)
 
 
 @router.delete(
@@ -37,7 +37,7 @@ async def create(data: dict = None) -> Phrase:
     status_code=200
 )
 async def delete(id: int) -> int:
-    return get_repository().delete(id)
+    return get_service().delete(id)
 
 
 @router.patch(
@@ -47,11 +47,11 @@ async def delete(id: int) -> int:
     status_code=205
 )
 async def update(id: int, data: dict) -> int:
-    return get_repository().update(id, data)
+    return get_service().update(id, data)
 
 
-def get_repository():
-    return PhraseRepository(
+def get_service():
+    return PhraseService(
         settings['db_name'],
         settings['cln_name']
     )

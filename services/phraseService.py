@@ -8,8 +8,8 @@ from pymongo import MongoClient
 from typing import List
 
 
-class PhraseRepository:
-    """Phrase repository."""
+class PhraseService:
+    """Phrase service."""
 
     def __init__(self, db_name: str, cln_name: str) -> None:
         """Constructor."""
@@ -63,7 +63,7 @@ class PhraseRepository:
             self.last_id += 1
             return Phrase(**data)
         else:
-            HTTPException(400, 'Creation error')
+            raise HTTPException(400, 'Creation error')
 
     def delete(self, id: int) -> int:
         """Deletes a phrase."""
@@ -75,7 +75,7 @@ class PhraseRepository:
         if result.acknowledged:
             return result.deleted_count
         else:
-            HTTPException(400, 'Deletion error')
+            raise HTTPException(400, 'Deletion error')
 
     def update(self, id: int, data: dict) -> int:
         """Updates a phrase."""
@@ -86,4 +86,4 @@ class PhraseRepository:
         if result.acknowledged:
             return result.modified_count
         else:
-            HTTPException(400, 'Update error')
+            raise HTTPException(400, 'Update error')

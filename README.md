@@ -11,7 +11,7 @@ testing: **Pytest**
 
 **Run server:**
 ```
-uvicorn main:app
+uvicorn main:famd_app
 ```
 
 **OpenAPI:**

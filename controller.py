@@ -7,7 +7,6 @@ from settings import settings
 
 router = APIRouter()
 
-
 @router.get(
     '/',
     description='Get a list of all phrases',

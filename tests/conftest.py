@@ -1,4 +1,5 @@
 from settings import settings
+
 settings['db_name'] = 'phrase-fastapi-mongodb-test'
 
 import pytest

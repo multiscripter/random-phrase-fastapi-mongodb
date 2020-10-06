@@ -12,6 +12,13 @@ from pymongo.results import UpdateResult
 from starlette.datastructures import QueryParams
 from services.phraseService import PhraseService
 
+# https://www.jetbrains.com/help/pycharm/pytest.html#create-pytest-test
+
+# Запуск тестов с покрытием из корня проекта.
+# coverage erase
+# coverage run -m pytest -p no:cacheprovider ./tests/*
+# coverage html
+
 
 @pytest.fixture(autouse=True)
 def run_around_tests():

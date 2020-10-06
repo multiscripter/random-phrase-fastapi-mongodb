@@ -8,18 +8,18 @@ import controller
 # Вэб-серверы (и др.) с поддержвой ASGI указаны по ссылке ниже:
 # https://github.com/florimondmanca/awesome-asgi
 
-app = FastAPI()
-root_dir = os.path.abspath(__file__).split('main.py')
-static_dir = root_dir[0] + 'static'
-app.mount("/static", StaticFiles(directory=static_dir), name="static")
-app.router.redirect_slashes = False
-app.include_router(
+famd_app = FastAPI()
+root_dir = os.path.abspath(__file__).split('main.py')[0]
+static_dir = root_dir + 'static'
+famd_app.mount("/static", StaticFiles(directory=static_dir), name="static")
+famd_app.router.redirect_slashes = False
+famd_app.include_router(
     controller.router,
     prefix='/phrases'
 )
 
 
-@app.get('/', response_class=HTMLResponse)
+@famd_app.get('/', response_class=HTMLResponse)
 async def root():
-    with open('index.html') as f:
+    with open(root_dir + 'index.html') as f:
         return f.read()

@@ -7,7 +7,7 @@ from models.phrase import Phrase
 from pymongo import MongoClient
 from starlette.testclient import TestClient
 import re
-from main import app
+from main import famd_app
 
 # https://www.jetbrains.com/help/pycharm/pytest.html#create-pytest-test
 
@@ -20,7 +20,7 @@ from main import app
 client = MongoClient()
 db = client[settings['db_name']]
 collection = db[settings['cln_name']]
-req_client = TestClient(app)
+req_client = TestClient(famd_app)
 
 
 @pytest.fixture(autouse=True)

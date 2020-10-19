@@ -2,10 +2,16 @@ import typing
 from datetime import datetime
 from pydantic import BaseModel
 from pydantic import Field
+from models.category import Category
 
 
 class Phrase(BaseModel):
     """Phrase model."""
+
+    def __init__(self, **data: typing.Any):
+        super().__init__(**data)
+        if 'category' in data:
+            self.category = Category(**data['category'])
 
     # ID.
     id: typing.Optional[int] = None
@@ -16,6 +22,8 @@ class Phrase(BaseModel):
         max_length=64,
         title='author'
     )
+
+    category: Category = {}
 
     # Text of phrase.
     text: str = Field(

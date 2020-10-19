@@ -3,6 +3,7 @@ from datetime import datetime
 import pymongo
 from fastapi import HTTPException
 from starlette.datastructures import QueryParams
+from models.category import Category
 from models.phrase import Phrase
 from pymongo import MongoClient
 from typing import List
@@ -34,17 +35,37 @@ class PhraseService:
                 val = int(val) if val.isdigit() else 1
                 if val < 1:
                     val = 1
-                cursor = self.collection.aggregate([
-                    {'$sample': {'size': val}}
-                ])
+                pipeline = []
+                # Выбрать случайную цитату из категории.
+                if 'category.id' in params:
+                    id = params['category.id']
+                    if id.isdigit():
+                        id = int(id)
+                        if id > 0:
+                            pipeline.append({'$match': {'category.id': id}})
+                pipeline.append({'$sample': {'size': val}})
+                cursor = self.collection.aggregate(pipeline)
             else:
-                fields = Phrase.__fields__.keys()
-                for key in params:
-                    if key in fields:
-                        val = params[key]
-                        if val.isdigit():
-                            val = int(val)
-                        criteria[key] = val
+                p_fields = Phrase.__fields__.keys()
+                params = params.__str__().split('&')
+                params = [p.split('=') for p in params]
+                for param in params:
+                    if param[0].startswith('category.'):
+                        c_fields = Category.__fields__.keys()
+                        kv = param[0].split('.')
+                        if kv[1] in c_fields:
+                            val = param[1]
+                            if val.isdigit():
+                                val = int(val)
+                            if kv[1] == 'id' and val < 1:
+                                continue
+                            criteria[f'{param[0]}'] = val
+                    else:
+                        if param[0] in p_fields:
+                            val = param[1]
+                            if val.isdigit():
+                                val = int(val)
+                            criteria[f'{param[0]}'] = val
                 cursor = self.collection.find(criteria)
         else:
             cursor = self.collection.find()

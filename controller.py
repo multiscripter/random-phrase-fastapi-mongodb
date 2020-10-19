@@ -7,6 +7,10 @@ from settings import settings
 
 router = APIRouter()
 
+
+# Can get phrase list by any models field:
+# http://127.0.0.1:8000/phrases/?id=59
+# http://127.0.0.1:8000/phrases/?category.id=1
 @router.get(
     '/',
     description='Get a list of all phrases',

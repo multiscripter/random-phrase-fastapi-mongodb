@@ -22,6 +22,11 @@ body {
     }
 }
 
+#cat-box {
+    display: flex;
+    justify-content: center;
+}
+
 .blockquote {
     min-height: 11rem;
 }

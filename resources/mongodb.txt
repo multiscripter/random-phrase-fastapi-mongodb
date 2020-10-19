@@ -1,1 +1,4 @@
-mongodump  --db=phrase-fastapi-mongodb
+mongodump --db=phrase-fastapi-mongodb
+
+db.phrases_category.insertOne({"id":1,"name":"Война"})
+db.phrases_category.insertOne({"id":2,"name":"Революция"})

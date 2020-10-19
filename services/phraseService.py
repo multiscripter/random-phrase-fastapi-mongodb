@@ -12,13 +12,14 @@ from typing import List
 class PhraseService:
     """Phrase service."""
 
-    def __init__(self, db_name: str, cln_name: str) -> None:
+    def __init__(self, db_name: str, cln_name: List[str]) -> None:
         """Constructor."""
 
         client = MongoClient()
         db = client[db_name]
-        self.collection = db[cln_name]
-        self.last_id = self.collection.find({}).sort(
+        self.phrases = db[cln_name[0]]
+        self.cats = db[cln_name[1]]
+        self.last_id = self.phrases.find({}).sort(
             'id', pymongo.DESCENDING
         ).limit(1).next()['id']
 
@@ -44,7 +45,7 @@ class PhraseService:
                         if id > 0:
                             pipeline.append({'$match': {'category.id': id}})
                 pipeline.append({'$sample': {'size': val}})
-                cursor = self.collection.aggregate(pipeline)
+                cursor = self.phrases.aggregate(pipeline)
             else:
                 p_fields = Phrase.__fields__.keys()
                 params = params.__str__().split('&')
@@ -66,9 +67,9 @@ class PhraseService:
                             if val.isdigit():
                                 val = int(val)
                             criteria[f'{param[0]}'] = val
-                cursor = self.collection.find(criteria)
+                cursor = self.phrases.find(criteria)
         else:
-            cursor = self.collection.find()
+            cursor = self.phrases.find()
         for found in cursor:
             phrase = Phrase(**found)
             result.append(phrase)
@@ -79,7 +80,7 @@ class PhraseService:
 
         data['id'] = self.last_id + 1
         data['date'] = datetime.utcnow()
-        result = self.collection.insert_one(data)
+        result = self.phrases.insert_one(data)
         if result.acknowledged:
             self.last_id += 1
             return Phrase(**data)
@@ -92,7 +93,7 @@ class PhraseService:
         criteria = {
             'id': {'$eq': id}
         }
-        result = self.collection.delete_many(criteria)
+        result = self.phrases.delete_many(criteria)
         if result.acknowledged:
             return result.deleted_count
         else:
@@ -103,8 +104,24 @@ class PhraseService:
 
         criteria = {'id': id}
         data = {'$set': data}
-        result = self.collection.update_one(criteria, data)
+        result = self.phrases.update_one(criteria, data)
         if result.acknowledged:
             return result.modified_count
         else:
             raise HTTPException(400, 'Update error')
+
+    def get_index_data(self) -> dict:
+        """Gets data for index page."""
+
+        data = dict()
+        data['categories'] = []
+        data['count'] = dict()
+        data['count'][0] = 0
+        cursor = self.cats.find()
+        for found in cursor:
+            cat = Category(**found)
+            data['categories'].append(cat)
+            criteria = {'category.id': cat.id}
+            data['count'][cat.id] = self.phrases.count(criteria)
+            data['count'][0] += data['count'][cat.id]
+        return data

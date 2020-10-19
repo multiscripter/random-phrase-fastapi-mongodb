@@ -1,4 +1,5 @@
 from settings import settings
+
 settings['db_name'] = 'phrase-fastapi-mongodb-test'
 
 import pytest
@@ -11,6 +12,7 @@ from pymongo.results import InsertOneResult
 from pymongo.results import UpdateResult
 from starlette.datastructures import QueryParams
 from services.phraseService import PhraseService
+
 
 # https://www.jetbrains.com/help/pycharm/pytest.html#create-pytest-test
 
@@ -25,7 +27,7 @@ def run_around_tests():
     # Actions before each test.
     client = MongoClient()
     db = client[settings['db_name']]
-    collection = db[settings['cln_name']]
+    collection = db[settings['cln_name'][0]]
     phrases = []
     for a in range(1, 3):
         phrases.append({
@@ -36,12 +38,12 @@ def run_around_tests():
         })
     collection.insert_many(phrases)
 
-    yield # run test.
+    yield  # run test.
 
     # Actions after each test.
     client = MongoClient()
     db = client[settings['db_name']]
-    collection = db[settings['cln_name']]
+    collection = db[settings['cln_name'][0]]
     collection.delete_many({})
 
 
@@ -51,7 +53,7 @@ def test_get_random_phrase():
 
     service = PhraseService(
         settings['db_name'],
-        settings['cln_name']
+        settings['cln_name'][0]
     )
     params = QueryParams({
         'random': ''
@@ -67,7 +69,7 @@ def test_get_random_phrase_less_one():
 
     service = PhraseService(
         settings['db_name'],
-        settings['cln_name']
+        settings['cln_name'][0]
     )
     params = QueryParams({
         'random': 0
@@ -83,9 +85,9 @@ def test_get_phrases_by_author():
 
     service = PhraseService(
         settings['db_name'],
-        settings['cln_name']
+        settings['cln_name'][0]
     )
-    service.create(data = {
+    service.create(data={
         'author': 'test-author-1',
         'text': 'test-text-2'
     })
@@ -102,7 +104,7 @@ def test_get_phrases_by_id():
 
     service = PhraseService(
         settings['db_name'],
-        settings['cln_name']
+        settings['cln_name'][0]
     )
     params = QueryParams({
         'id': '1'
@@ -118,12 +120,12 @@ def test_create_http_exception(mocker):
 
     service = PhraseService(
         settings['db_name'],
-        settings['cln_name']
+        settings['cln_name'][0]
     )
     insert_result = InsertOneResult(0, None)
     mock_insert_one = mocker.patch.object(Collection, 'insert_one')
     mock_insert_one.return_value = insert_result
-    service.collection.insert_one = mock_insert_one
+    service.phrases.insert_one = mock_insert_one
 
     data = {
         'author': 'create-author',
@@ -142,12 +144,12 @@ def test_delete_http_exception(mocker):
 
     service = PhraseService(
         settings['db_name'],
-        settings['cln_name']
+        settings['cln_name'][0]
     )
     delete_result = DeleteResult(None, False)
     mock_delete_many = mocker.patch.object(Collection, 'delete_many')
     mock_delete_many.return_value = delete_result
-    service.collection.delete_many = mock_delete_many
+    service.phrases.delete_many = mock_delete_many
 
     with pytest.raises(HTTPException) as ex:
         service.delete(1)
@@ -162,12 +164,12 @@ def test_update_http_exception(mocker):
 
     service = PhraseService(
         settings['db_name'],
-        settings['cln_name']
+        settings['cln_name'][0]
     )
     update_result = UpdateResult(None, False)
     mock_update_one = mocker.patch.object(Collection, 'update_one')
     mock_update_one.return_value = update_result
-    service.collection.update_one = mock_update_one
+    service.phrases.update_one = mock_update_one
 
     with pytest.raises(HTTPException) as ex:
         service.update(1, {'status': 1})

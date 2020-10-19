@@ -1,7 +1,9 @@
 import os
 from fastapi import FastAPI
+from fastapi import Request
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 import controller
 
 # FastAPI - это ASGI-фрэймворк. Apache2 не поддерживает ASGI.
@@ -17,9 +19,16 @@ famd_app.include_router(
     controller.router,
     prefix='/phrases'
 )
+famd_app.debug = True
+templates = Jinja2Templates(directory=f'{root_dir}templates')
 
 
+# Used template engine Jinja2.
+# https://jinja.palletsprojects.com/en/2.11.x/templates/
 @famd_app.get('/', response_class=HTMLResponse)
-async def root():
-    with open(root_dir + 'index.html') as f:
-        return f.read()
+async def root(request: Request):
+    service = controller.get_service()
+    data = service.get_index_data()
+    data['request'] = request
+    print(data)
+    return templates.TemplateResponse('index.html', data)

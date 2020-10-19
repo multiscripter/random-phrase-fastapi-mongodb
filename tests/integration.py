@@ -19,7 +19,7 @@ from main import famd_app
 
 client = MongoClient()
 db = client[settings['db_name']]
-collection = db[settings['cln_name']]
+collection = db[settings['cln_name'][0]]
 req_client = TestClient(famd_app)
 
 

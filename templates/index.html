@@ -49,7 +49,7 @@
     <main class="container">
         <div class="row">
             <div class="col">
-                <h1 class="text-center">Случайная цитата</h1>
+                <h1 class="text-center">Случайная цитата<span id="ver">v8</span></h1>
                 <h4 class="text-center">REST сервис на FastAPI и MongoDB</h4>
                 <div id="cat-box" class="mb-2">
                     <div class="form-check form-check-inline">
@@ -59,26 +59,23 @@
                                 id="cat-0"
                                 value="0"
                                 checked>
-                        <label class="form-check-label" for="cat-0">Все</label>
+                        <label class="form-check-label" for="cat-0">
+                            Все ({{count[0]}})
+                        </label>
                     </div>
+                    {% for cat in categories %}
                     <div class="form-check form-check-inline">
                         <input
                                 class="form-check-input"
                                 type="radio"
                                 name="category"
-                                id="cat-1"
-                                value="1">
-                        <label class="form-check-label" for="cat-1">Война</label>
+                                id="cat-{{ cat.id }}"
+                                value="{{ cat.id }}">
+                        <label class="form-check-label" for="cat-{{ cat.id }}">
+                            {{ cat.name }} ({{count[cat.id]}})
+                        </label>
                     </div>
-                    <div class="form-check form-check-inline">
-                        <input
-                                class="form-check-input"
-                                type="radio"
-                                name="category"
-                                id="cat-2"
-                                value="2">
-                        <label class="form-check-label" for="cat-2">Революция</label>
-                    </div>
+                    {% endfor %}
                 </div>
                 <blockquote class="blockquote">
                     <p id="phrase" class="mb-0">Текст этой цитаты я так и не придумал.</p>

@@ -22,6 +22,14 @@ body {
     }
 }
 
+label {
+    cursor: pointer;
+}
+
+#ver {
+    font-size: 14px;
+}
+
 #cat-box {
     display: flex;
     justify-content: center;

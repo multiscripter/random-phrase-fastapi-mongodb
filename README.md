@@ -33,3 +33,5 @@ pydantic
 pymongo
 
 starlette
+
+jinja2

@@ -30,5 +30,4 @@ async def root(request: Request):
     service = controller.get_service()
     data = service.get_index_data()
     data['request'] = request
-    print(data)
     return templates.TemplateResponse('index.html', data)

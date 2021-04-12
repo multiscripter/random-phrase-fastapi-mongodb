@@ -9,7 +9,7 @@ data storage: **MongoDB**
 testing: **Pytest**
 
 
-**Run server:**
+**Run server from project root:**
 ```
 uvicorn main:famd_app
 ```

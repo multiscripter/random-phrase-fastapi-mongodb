@@ -1,10 +1,14 @@
-from fastapi import APIRouter
+import os
+from fastapi import APIRouter, HTTPException
 from fastapi import Request
 from typing import List
+
+from services.authService import AuthService
 from services.phraseService import PhraseService
 from models.phrase import Phrase
 from settings import settings
 
+root_dir = os.path.abspath(__file__).split('controller.py')[0]
 router = APIRouter()
 
 
@@ -29,7 +33,8 @@ async def get_list(request: Request) -> List[Phrase]:
     response_model=Phrase,
     status_code=201
 )
-async def create(data: dict = None) -> Phrase:
+async def create(request: Request, data: dict = None) -> Phrase:
+    check_auth(request)
     return get_service().create(data)
 
 
@@ -39,7 +44,8 @@ async def create(data: dict = None) -> Phrase:
     response_description='Affected entries',
     status_code=200
 )
-async def delete(id: int) -> int:
+async def delete(request: Request, id: int) -> int:
+    check_auth(request)
     return get_service().delete(id)
 
 
@@ -49,8 +55,17 @@ async def delete(id: int) -> int:
     response_description='Updated entries',
     status_code=205
 )
-async def update(id: int, data: dict) -> int:
+async def update(request: Request, id: int, data: dict) -> int:
+    check_auth(request)
     return get_service().update(id, data)
+
+
+def check_auth(request: Request) -> None:
+    auth = AuthService(root_dir)
+    if 'x-key' not in request.headers:
+        raise HTTPException(400, 'Key is not set')
+    elif not auth.check(request.headers['x-key']):
+        raise HTTPException(400, 'Auth error')
 
 
 def get_service():

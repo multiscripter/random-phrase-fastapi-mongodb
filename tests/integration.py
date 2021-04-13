@@ -49,7 +49,7 @@ def test_get_list_success():
     for found in collection.find():
         phrase = Phrase(**found)
         phrase.date = phrase.date.isoformat()
-        expected.append(phrase)
+        expected.append(_phrase2json(phrase))
 
     response = req_client.get('http://127.0.0.1:8000/phrases/')
     assert response.status_code == 200
@@ -69,7 +69,11 @@ def test_create_success():
     expected = Phrase(**data, date=datetime.utcnow())
     expected.id = id
 
-    response = req_client.post('http://127.0.0.1:8000/phrases/', json=data)
+    response = req_client.post(
+        'http://127.0.0.1:8000/phrases/',
+        headers={'X-Key': 'Nk}J0fh8_t@QTes@DSfo%Rr[r\^Hb$wN'},
+        json=data
+    )
     assert response.status_code == 201
 
     actual = response.json()
@@ -83,7 +87,10 @@ def test_delete_success():
     """Test: Method DELETE, URI /phrases/"""
 
     id = 2
-    response = req_client.delete(f'http://127.0.0.1:8000/phrases/{id}/')
+    response = req_client.delete(
+        f'http://127.0.0.1:8000/phrases/{id}/',
+        headers={'X-Key': 'Nk}J0fh8_t@QTes@DSfo%Rr[r\^Hb$wN'}
+    )
     assert response.status_code == 200
 
     actual = response.json()
@@ -99,7 +106,11 @@ def test_update_success():
         'author': 'updated author',
         'text': 'updated text'
     }
-    response = req_client.patch(f'http://127.0.0.1:8000/phrases/{id}/', json=data)
+    response = req_client.patch(
+        f'http://127.0.0.1:8000/phrases/{id}/',
+        headers={'X-Key': 'Nk}J0fh8_t@QTes@DSfo%Rr[r\^Hb$wN'},
+        json=data
+    )
     assert response.status_code == 205
 
     actual = response.json()
@@ -108,3 +119,16 @@ def test_update_success():
     actual = collection.find_one({'id': id})
     assert data['author'] == actual['author']
     assert data['text'] == actual['text']
+
+
+def _phrase2json(phrase: Phrase):
+    return {
+        'id': phrase.id if hasattr(phrase, 'id') else None,
+        'author': phrase.author if hasattr(phrase, 'author') else None,
+        'category': phrase.category if phrase.category else {
+            'id': None,
+            'name': None
+        },
+        'text': phrase.text if hasattr(phrase, 'text') else None,
+        'date': phrase.date if hasattr(phrase, 'date') else None
+    }

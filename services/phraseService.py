@@ -122,6 +122,6 @@ class PhraseService:
             cat = Category(**found)
             data['categories'].append(cat)
             criteria = {'category.id': cat.id}
-            data['count'][cat.id] = self.phrases.count(criteria)
+            data['count'][cat.id] = self.phrases.count_documents(criteria)
             data['count'][0] += data['count'][cat.id]
         return data

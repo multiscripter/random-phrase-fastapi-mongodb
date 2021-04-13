@@ -1,6 +1,5 @@
 __pycache__/
 .coverage
-.ht*
 .idea
 htmlcov/*
 !htmlcov/.htaccess

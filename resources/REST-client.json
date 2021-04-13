@@ -23,6 +23,51 @@
                 "items": []
               },
               "bodyType": "Text",
+              "textBody": "{\n  \"author\": \"Test Author\",\n  \"text\": \"test text\"\n}"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": []
+              },
+              "scheme": {
+                "name": "http",
+                "version": "V11"
+              },
+              "host": "127.0.0.1:8000",
+              "path": "/phrases/"
+            },
+            "id": "c880c968-57e8-4853-b56f-eb0e1edce0a8",
+            "name": "create phrase",
+            "headers": [
+              {
+                "enabled": true,
+                "name": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "enabled": true,
+                "name": "X-Key",
+                "value": "Nk}J0fh8_t@QTes@DSfo%Rr[r\\^Hb$wN"
+              }
+            ]
+          }
+        },
+        {
+          "entity": {
+            "type": "Request",
+            "method": {
+              "requestBody": true,
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+              "name": "POST"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text",
               "textBody": "{\n  \"author\": \"Эдмунд Берк\",\n  \"text\": \"Если народ бунтует, то не от стремления взять чужое, а от невозможности сохранить свое\",\n  \"category\": {\n    \"id\": 2,\n    \"name\": \"Революция\"\n  }\n}"
             },
             "uri": {
@@ -38,7 +83,7 @@
               "path": "/phrases/"
             },
             "id": "88f36e6e-824c-4da0-ab1e-3b6e97fdcceb",
-            "name": "create phrase",
+            "name": "create phrase no key",
             "headers": [
               {
                 "enabled": true,
@@ -73,11 +118,17 @@
                 "version": "V11"
               },
               "host": "127.0.0.1:8000",
-              "path": "/phrases/7/"
+              "path": "/phrases/101/"
             },
             "id": "507e98a4-5545-41a3-9df3-955ffe7bd234",
             "name": "delete phrase",
-            "headers": []
+            "headers": [
+              {
+                "enabled": true,
+                "name": "X-Key",
+                "value": "Nk}J0fh8_t@QTes@DSfo%Rr[r\\^Hb$wN"
+              }
+            ]
           }
         },
         {
@@ -116,6 +167,44 @@
           "entity": {
             "type": "Request",
             "method": {
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+              "name": "GET"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": [
+                  {
+                    "enabled": true,
+                    "name": "id",
+                    "value": "1"
+                  }
+                ]
+              },
+              "scheme": {
+                "name": "http",
+                "version": "V11"
+              },
+              "host": "127.0.0.1:8000",
+              "path": "/phrases/"
+            },
+            "id": "81252eb9-9460-41e4-abdd-d8e3ef660191",
+            "name": "get phrase by id",
+            "headers": []
+          }
+        },
+        {
+          "entity": {
+            "type": "Request",
+            "method": {
               "requestBody": true,
               "link": "http://tools.ietf.org/html/rfc5789",
               "name": "PATCH"
@@ -127,7 +216,7 @@
                 "items": []
               },
               "bodyType": "Text",
-              "textBody": "{\n  \"author\": \"Иосиф Сталин\",\n  \"text\": \"Одна смерть – трагедия. Миллион смертей – статистика\",\n  \"category\": {\n    \"id\": 1,\n    \"name\": \"Война\"\n  }\n}"
+              "textBody": "{\n  \"author\": \"asdasd\",\n  \"text\": \"ddddddddd\",\n  \"category\": {\n    \"id\": 1,\n    \"name\": \"Война\"\n  }\n}"
             },
             "uri": {
               "query": {
@@ -139,7 +228,7 @@
                 "version": "V11"
               },
               "host": "127.0.0.1:8000",
-              "path": "/phrases/1/"
+              "path": "/phrases/101/"
             },
             "id": "1393f6ac-ccaf-475f-9d2a-f66cb294a3ab",
             "name": "update phrase",
@@ -148,6 +237,11 @@
                 "enabled": true,
                 "name": "Content-Type",
                 "value": "application/json"
+              },
+              {
+                "enabled": true,
+                "name": "X-Key",
+                "value": "Nk}J0fh8_t@QTes@DSfo%Rr[r\\^Hb$wN"
               }
             ]
           }

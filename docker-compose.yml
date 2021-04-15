@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+
+  mongodb:
+    command: mongod --noauth
+    container_name: mongodb
+    image: mongo:4.4.5-bionic
+    network_mode: host
+    ports:
+      - "27017:27017"
+    volumes:
+      - .:/app/
+
+  mongo_seed:
+    command: /app/restore-mongodb-dump.sh
+    container_name: mongo_seed
+    image: mongo:4.4.5-bionic
+    depends_on:
+      - mongodb
+    network_mode: host
+    volumes:
+      - .:/app/
+
+#  web:
+#    build: .
+#    command: uvicorn main:famd_app
+#    container_name: web
+#    depends_on:
+#      - mongodb
+#    network_mode: host
+#    ports:
+#      - "8000:8000"
+#    volumes:
+#      - .:/app/

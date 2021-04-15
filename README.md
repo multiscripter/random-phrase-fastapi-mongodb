@@ -8,8 +8,14 @@ data storage: **MongoDB**
 
 testing: **Pytest**
 
+###Run from project root:
 
-**Run server from project root:**
+#### In Docker container:
+- docker-compose build
+- docker-compose up -d
+
+
+####Run server from project root:
 ```
 uvicorn main:famd_app
 ```
@@ -25,15 +31,11 @@ http://127.0.0.1:8000/docs
 ```
 
 **dependencies**
-
-fastapi
-
-aiofiles
-
-pydantic
-
-pymongo
-
-starlette
-
-jinja2
+- Python==3.8.7
+- aiofiles==0.5.0
+- uvicorn==0.13.3
+- fastapi==0.61.1
+- pydantic==1.6.1
+- pymongo==3.11.0
+- starlette==0.13.6
+- jinja2==2.11.2

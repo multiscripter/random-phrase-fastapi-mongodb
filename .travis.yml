@@ -1,0 +1,22 @@
+language: python
+python:
+  - "3.8"
+
+# command to install dependencies
+install:
+  - pip install -r requirements.txt
+
+# command to run tests
+script:
+  - pytest --cov-report term --cov=. ./tests/*
+
+services:
+  - mongodb
+
+notifications:
+  email: false
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
+
+codecov: true

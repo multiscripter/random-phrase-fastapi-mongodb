@@ -42,6 +42,14 @@ def run_around_tests():
     collection.delete_many({})
 
 
+def test_get_root_success():
+    """Test: Method GET, URI /"""
+
+    response = req_client.get('http://127.0.0.1:8000/')
+    assert response.status_code == 200
+    assert response.text.find('Случайная цитата') != -1
+
+
 def test_get_list_success():
     """Test: Method GET, URI /phrases/"""
 

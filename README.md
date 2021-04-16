@@ -1,5 +1,9 @@
 # Random phrase
 
+
+[![Build Status](https://travis-ci.com/multiscripter/random-phrase-fastapi-mongodb.svg?branch=master)](https://travis-ci.com/multiscripter/random-phrase-fastapi-mongodb)
+[![codecov](https://codecov.io/gh/multiscripter/random-phrase-fastapi-mongodb/branch/master/graph/badge.svg?token=LUVPCW7XU7)](https://codecov.io/gh/multiscripter/random-phrase-fastapi-mongodb)
+
 architecture: **REST**
 
 framework: **FastAPI**
@@ -39,3 +43,6 @@ http://127.0.0.1:8000/docs
 - pymongo==3.11.0
 - starlette==0.13.6
 - jinja2==2.11.2
+- requests==2.25.1
+- pytest-mock==3.5.1
+- pytest-cov==2.11.1

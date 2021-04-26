@@ -46,3 +46,7 @@ http://127.0.0.1:8000/docs
 - requests==2.25.1
 - pytest-mock==3.5.1
 - pytest-cov==2.11.1
+
+### Check this out:
+
+http://random-phrase.3141.ru/
